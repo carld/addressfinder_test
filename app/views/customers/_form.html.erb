@@ -15,21 +15,24 @@
     <%= f.label :name %><br>
     <%= f.text_field :name %>
   </div>
+
   <div class="field">
-    <%= f.label :street_details %><br>
-    <%= f.text_field :street_details %>
+    <%= f.label :address %><br>
+    <%= f.text_field :address %>
+  </div>
+
+  <div class="field">
+    <%= f.hidden_field :street_details %>
+  </div>
+
+  <div class="field">
+    <%= f.hidden_field :suburb %>
   </div>
   <div class="field">
-    <%= f.label :suburb %><br>
-    <%= f.text_field :suburb %>
+    <%= f.hidden_field :city %>
   </div>
   <div class="field">
-    <%= f.label :city %><br>
-    <%= f.text_field :city %>
-  </div>
-  <div class="field">
-    <%= f.label :postcode %><br>
-    <%= f.number_field :postcode %>
+    <%= f.hidden_field :postcode %>
   </div>
   <div class="field">
     <%= f.label :phone_number %><br>
@@ -39,3 +42,28 @@
     <%= f.submit %>
   </div>
 <% end %>
+
+<script>
+var initAF = function(){
+  var widget = new AddressFinder.Widget(document.getElementById('customer_address'), '4D8V6EGHJYNPA7MUWKLB','NZ');
+
+  widget.on("result:select", function(value /* string */, item /* object */) {
+    console.log(value);
+    console.log(item);
+
+    document.getElementById('customer_street_details').value = item.postal;
+    document.getElementById('customer_suburb').value = item.suburb;
+    document.getElementById('customer_city').value = item.city;
+    document.getElementById('customer_postcode').value = item.postcode;
+  });
+};
+
+(function(f){
+  var script = document.createElement('script');
+  script.src = 'https://api.addressfinder.io/assets/v3/widget.js';
+  script.async = true;
+  script.onload = f;
+  document.body.appendChild(script);
+})(initAF);
+</script>
+
